@@ -1,0 +1,15 @@
+{
+  "name": "cms",
+  "version": "1.0.1",
+  "description": "A CMS in Node.js",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tarlan Aliyev",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.6"
+  }
+}
