@@ -4,6 +4,8 @@ const path = require('path');
 const exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
+const Handlebars = require('handlebars');
 
 mongoose.set('strictQuery', false);
 
@@ -19,7 +21,7 @@ app.use(express.static(path.join((__dirname, 'public'))));
 
 
 //Set View Engine
-app.engine('handlebars', exphbs.engine({defaultLayout: 'home'})); //// burda sadece exphbs olanda error verirdi, sonun .engine yazanda duzeldi ama.
+app.engine('handlebars', exphbs.engine({handlebars: allowInsecurePrototypeAccess(Handlebars), defaultLayout: 'home'})); //// burda sadece exphbs olanda error verirdi, sonun .engine yazanda duzeldi ama.
 app.set('view engine', 'handlebars');
 
 //Body Parser

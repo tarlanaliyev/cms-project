@@ -10,7 +10,14 @@ router.all('/*', (req, res, next) => {   ///onsuzda admin oldugu ucun bunu silib
 })
 
 router.get('/', (req,res) => {
-    res.render('admin/posts/index');
+
+    Post.find({}).then(posts => {
+
+        //console.log(posts);
+
+        res.render('admin/posts', {posts: posts});
+
+    })
 })
 
 router.get('/create', (req,res) => {
@@ -28,7 +35,9 @@ router.post('/create', (req,res) => {
     post.body = req.body.body;
 
     post.save().then(savedPost => {
-        res.redirect("/admin/posts/index");
+        Post.findOne({_id: post.id}).then(post => {
+            res.render('admin/posts/currentPost', {sentPost: post});
+        })
     }).catch(err => {
         res.send("Post not saved");
         console.log(err);
@@ -36,6 +45,16 @@ router.post('/create', (req,res) => {
 
     //res.render("admin/posts/create");
     //console.log(req.body);
+})
+
+router.get('/edit/:id', (req,res) => {
+
+    Post.findOne({_id: req.params.id}).then(post => {
+        res.render('admin/posts/edit', {post: post});
+    })
+
+
+
 })
 
 
