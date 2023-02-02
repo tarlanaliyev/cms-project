@@ -52,8 +52,27 @@ router.get('/edit/:id', (req,res) => {
     Post.findOne({_id: req.params.id}).then(post => {
         res.render('admin/posts/edit', {post: post});
     })
+})
 
+router.put('/edit/:id', (req,res) => {
 
+    Post.findOne({_id: req.params.id}).then(post => {
+
+        let allowComments = (req.body.allowComments) ? true : false;
+
+        post.title = req.body.title;
+        post.status = req.body.status;
+        post.allowComments = allowComments;
+        post.body = req.body.body;
+
+        post.save().then(savedPost => {
+            res.render('admin/posts/currentPost', {sentPost: savedPost});
+        }).catch(err => {
+            res.send("Post not saved!");
+            console.log(err);
+        })
+
+    })
 
 })
 

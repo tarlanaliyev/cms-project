@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 const Handlebars = require('handlebars');
+const methodOverride = require('method-override');
 
 mongoose.set('strictQuery', false);
 
@@ -21,12 +22,18 @@ app.use(express.static(path.join((__dirname, 'public'))));
 
 
 //Set View Engine
-app.engine('handlebars', exphbs.engine({handlebars: allowInsecurePrototypeAccess(Handlebars), defaultLayout: 'home'})); //// burda sadece exphbs olanda error verirdi, sonun .engine yazanda duzeldi ama.
+
+const {select} = require('./helpers/handlebars-helper');
+
+app.engine('handlebars', exphbs.engine({handlebars: allowInsecurePrototypeAccess(Handlebars), defaultLayout: 'home', helpers: {select: select}})); //// burda sadece exphbs olanda error verirdi, sonun .engine yazanda duzeldi ama.
 app.set('view engine', 'handlebars');
 
 //Body Parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+
+//Method Override
+app.use(methodOverride('_method'));
 
 //load routes
 const home = require('./routes/home/index');

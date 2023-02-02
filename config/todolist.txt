@@ -1,0 +1,3 @@
+Problemler:
+1. handlebars-helpers.js de select funksiyasinda .fn() funksiyasi islemir --> let allowComments = (req.body.allowComments) ? true : false; etmekle isledi. /create-de oldugu kimi etdik duzeldi.
+2. Post edit edib gonderende allowedComments deyeri getmir.
