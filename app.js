@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 const Handlebars = require('handlebars');
 const methodOverride = require('method-override');
+const upload = require('express-fileupload');
 
 mongoose.set('strictQuery', false);
 
@@ -31,6 +32,9 @@ app.set('view engine', 'handlebars');
 //Body Parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+
+//upload
+app.use(upload());
 
 //Method Override
 app.use(methodOverride('_method'));
