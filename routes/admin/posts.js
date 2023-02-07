@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../../models/Post');
-const {isEmpty} = require('../../helpers/upload-helper');
+const {isEmpty, uploadDir} = require('../../helpers/upload-helper');
+const fs = require('fs');
 
 router.all('/*', (req, res, next) => {   ///onsuzda admin oldugu ucun bunu silib test elemek olar
 
@@ -27,9 +28,11 @@ router.get('/create', (req,res) => {
 
 router.post('/create', (req,res) => {
 
+    let filename = "";
+
    if (!isEmpty(req.files.file)) { ///burda .file-i silende error verir. --> todolist:3
        let file = req.files.file;
-       let filename = file.name;
+       filename = Date.now() + "-" + file.name;
 
        file.mv('./public/uploads/' + filename, err => {
            if(err) throw err;
@@ -43,7 +46,9 @@ router.post('/create', (req,res) => {
     post.status = req.body.status;
     post.allowComments = alowComments;
     post.body = req.body.body;
-    post.file = req.filename;
+    post.file = filename;
+
+    console.log(filename);
 
     post.save().then(savedPost => {
         Post.findOne({_id: post.id}).then(post => {
@@ -87,8 +92,15 @@ router.put('/edit/:id', (req,res) => {
 
 router.delete('/delete/:id', (req,res) => {
 
-    Post.findOneAndDelete({_id: req.params.id}).then(post => {
-        res.redirect('/admin/posts/');
+    Post.findOne({_id: req.params.id}).then(post => {
+        console.log(post);
+        fs.unlink(uploadDir + post.file, err=> {
+            post.remove().then(removedPost => {
+                res.redirect('/admin/posts/');
+            })
+
+        })
+        //res.redirect('/admin/posts/');
     })
 })
 
