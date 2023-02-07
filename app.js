@@ -8,6 +8,8 @@ const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-acce
 const Handlebars = require('handlebars');
 const methodOverride = require('method-override');
 const upload = require('express-fileupload');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 mongoose.set('strictQuery', false);
 
@@ -18,6 +20,19 @@ mongoose.connect('mongodb://127.0.0.1:27017/cms')
         console.log("Error happened");
 });
 
+app.use(session({
+    secret: "tarlanaliyevss",
+    resave: true,
+    saveUninitialized: true
+}));
+
+app.use(flash());
+
+//Local Variables using Middleware
+app.use((req, res, next) => {
+    res.locals.success_message = req.flash('success_message');
+    next();
+});
 
 app.use(express.static(path.join((__dirname, 'public'))));
 

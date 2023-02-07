@@ -19,6 +19,7 @@ router.get('/', (req,res) => {
 
         res.render('admin/posts', {posts: posts});
 
+
     })
 })
 
@@ -48,18 +49,26 @@ router.post('/create', (req,res) => {
     post.body = req.body.body;
     post.file = filename;
 
-    console.log(filename);
+    //console.log(filename);
 
     post.save().then(savedPost => {
-        Post.findOne({_id: post.id}).then(post => {
-            res.render('admin/posts/currentPost', {sentPost: post});
-        })
+
+        req.flash('success_message', `Post ${post.title} was succesfully saved!`);   //it works! res.render edende flash duzgun islemir. gerek res.redirect edesen
+        res.redirect('/admin/posts');
+
+        // Post.findOne({_id: post.id}).then(post => {
+        //     //console.log(res.locals.success_message);
+        //     req.flash('success_message', `Post ${post.title} was succesfully saved!`);
+        //     res.render('admin/posts/currentPost', {sentPost: post});
+        // })
     }).catch(err => {
-        res.send("Post not saved");
-        console.log(err);
+        res.render('admin/posts/create', {error: err.errors})
+        //res.send("Post not saved");
+        //console.log(err.message);
     });
 
 })
+
 
 router.get('/edit/:id', (req,res) => {
 

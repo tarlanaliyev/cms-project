@@ -2,9 +2,15 @@
 
 <form action="/admin/posts/create" method="post" enctype="multipart/form-data">  <!-- enctype="multipart/form-data" yazanda(cox vaxt formda file olursa) body-parse modulu handle ede bilmir requesti-->
 
+    {{#each error}}
+        <div class="alert alert-danger">
+            {{message}}
+        </div>
+    {{/each}}
+
     <div class="form-group">
         <label for="title">Title</label>
-        <input name="title" type="text" class="form-control" id="title" placeholder="Enter Title">
+        <input required name="title" type="text" class="form-control" id="title" placeholder="Enter Title">
     </div>
 
     <div class="form-group">
@@ -35,7 +41,7 @@
 
     <div class="form-group">
         <label for="body"> Body
-            <textarea name="body" cols="50" rows="10" type="text" class="form-control" id="body"></textarea>
+            <textarea required name="body" cols="50" rows="10" type="text" class="form-control" id="body"></textarea>
         </label>
 
     </div>
