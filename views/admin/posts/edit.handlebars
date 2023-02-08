@@ -1,12 +1,15 @@
 <h1>Edit Post</h1>
 
-<form action="/admin/posts/edit/{{post.id}}?_method=PUT" method="post">  <!-- enctype="multipart/form-data" yazanda(cox vaxt formda file olursa) body-parse modulu handle ede bilmir requesti-->
+<form action="/admin/posts/edit/{{post.id}}?_method=PUT" method="post" enctype="multipart/form-data">  <!-- enctype="multipart/form-data" yazanda(cox vaxt formda file olursa) body-parse modulu handle ede bilmir requesti-->
 
     <div class="form-group">
-
         <label for="title">Title</label>
         <input name="title" type="text" class="form-control" id="title" value="{{post.title}}">  <!-- post.title yazmaq lazim imis arasdir gor niye -->
+    </div>
 
+    <div class="form-group">
+        <label for="title">File Upload</label>
+        <input name="file" type="file" class="form-control" id="file">
     </div>
 
 

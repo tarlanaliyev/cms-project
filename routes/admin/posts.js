@@ -31,7 +31,7 @@ router.post('/create', (req,res) => {
 
     let filename = "";
 
-   if (!isEmpty(req.files.file)) { ///burda .file-i silende error verir. --> todolist:3
+   if (req.files != null && req.files !== undefined) { ///burda .file-i silende error verir. --> todolist:3 -- if (!isEmpty(req.files.file))
        let file = req.files.file;
        filename = Date.now() + "-" + file.name;
 
@@ -81,6 +81,7 @@ router.put('/edit/:id', (req,res) => {
 
     Post.findOne({_id: req.params.id}).then(post => {
 
+        let filename = "";
         let allowComments = (req.body.allowComments) ? true : false;
 
         post.title = req.body.title;
@@ -88,10 +89,25 @@ router.put('/edit/:id', (req,res) => {
         post.allowComments = allowComments;
         post.body = req.body.body;
 
+        if (req.files != null && req.files !== undefined) { ///burda req.files.file-i silende de elave edende de error verir. --> todolist:3
+            let file = req.files.file;
+            filename = Date.now() + "-" + file.name;
+
+            file.mv('./public/uploads/' + filename, err => {
+                if(err) throw err;
+            });
+        }
+
+        post.file = filename;
+
         post.save().then(savedPost => {
-            res.render('admin/posts/currentPost', {sentPost: savedPost});
+
+            req.flash('success_message', `Post ${post.title} was succesfully updated!`);   //it works! res.render edende flash duzgun islemir. gerek res.redirect edesen
+            res.redirect('/admin/posts');
+
+            //res.render('admin/posts/currentPost', {sentPost: savedPost});
         }).catch(err => {
-            res.send("Post not saved!");
+            res.render('admin/posts/create', {error: err.errors})
             console.log(err);
         })
 
@@ -105,6 +121,7 @@ router.delete('/delete/:id', (req,res) => {
         console.log(post);
         fs.unlink(uploadDir + post.file, err=> {
             post.remove().then(removedPost => {
+                req.flash('success_message', `Post ${post.title} was succesfully DELETED!`);
                 res.redirect('/admin/posts/');
             })
 

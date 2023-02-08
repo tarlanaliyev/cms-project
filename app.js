@@ -39,9 +39,9 @@ app.use(express.static(path.join((__dirname, 'public'))));
 
 //Set View Engine
 
-const {select} = require('./helpers/handlebars-helper');
+const {select, generateDate} = require('./helpers/handlebars-helper');
 
-app.engine('handlebars', exphbs.engine({handlebars: allowInsecurePrototypeAccess(Handlebars), defaultLayout: 'home', helpers: {select: select}})); //// burda sadece exphbs olanda error verirdi, sonun .engine yazanda duzeldi ama.
+app.engine('handlebars', exphbs.engine({handlebars: allowInsecurePrototypeAccess(Handlebars), defaultLayout: 'home', helpers: {select: select, generateDate: generateDate}})); //// burda sadece exphbs olanda error verirdi, sonun .engine yazanda duzeldi ama.
 app.set('view engine', 'handlebars');
 
 //Body Parser
