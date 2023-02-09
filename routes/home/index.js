@@ -14,8 +14,8 @@ router.all('/*', (req, res, next) => {   /// admin/index -de olan kodu bura da y
 router.get('/', (req,res) => {
 
     Post.find({}).then(posts => {
-        Category.find({}).then(categories => {
-            res.render("home/index", {posts: posts, categories: categories});  /// views folderinin altinda /home/index.handlebars file-in axtarir
+        Category.find({}).then(category => {
+            res.render("home/index", {posts: posts, category: category});  /// views folderinin altinda /home/index.handlebars file-in axtarir
         })
     }).catch(err => {
         res.send("Error happened");
@@ -38,7 +38,9 @@ router.get('/register', (req,res) => {
 
 router.get('/post/:id', (req,res) => {
     Post.findOne({_id: req.params.id}).then(post => {
-        res.render("home/post", {post: post});
+        Category.find({}).then(categories => {
+            res.render("home/post", {post: post, categories: categories});
+        })
     })
 
 })

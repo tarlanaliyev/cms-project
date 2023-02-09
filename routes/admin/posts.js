@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../../models/Post');
+const Category = require('../../models/Category');
 const {isEmpty, uploadDir} = require('../../helpers/upload-helper');
 const fs = require('fs');
 
@@ -24,7 +25,9 @@ router.get('/', (req,res) => {
 })
 
 router.get('/create', (req,res) => {
-    res.render("admin/posts/create");
+    Category.find({}).then(category => {
+        res.render("admin/posts/create", {category: category});
+    })
 })
 
 router.post('/create', (req,res) => {
@@ -48,6 +51,7 @@ router.post('/create', (req,res) => {
     post.allowComments = alowComments;
     post.body = req.body.body;
     post.file = filename;
+    post.category = req.body.category;
 
     //console.log(filename);
 
@@ -73,7 +77,9 @@ router.post('/create', (req,res) => {
 router.get('/edit/:id', (req,res) => {
 
     Post.findOne({_id: req.params.id}).then(post => {
-        res.render('admin/posts/edit', {post: post});
+        Category.find({}).then(category => {
+            res.render("admin/posts/edit", {post: post, category: category});
+        })
     })
 })
 
