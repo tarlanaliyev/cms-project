@@ -1,8 +1,0 @@
-Problemler:
-1. handlebars-helpers.js de select funksiyasinda .fn() funksiyasi islemir (video 96,97)
-2. Post edit edib gonderende allowedComments deyeri getmir. fixed! --> let allowComments = (req.body.allowComments) ? true : false; etmekle isledi. /create-de oldugu kimi etdik duzeldi.
-3. upload-helper.js-de isEmpty funksiyasinsda ob.hasOwnProperty(key) error atir. --> TypeError: obj.hasOwnProperty is not a function.
-- ama if (!isEmpty(req.files.file)) .file - i elave edende error vermir. req.files-da hasOwnProperty() ede bilmir ele bil.
-
-
-app.js-de 44-cu setri at chatgptye gor ne deyir!

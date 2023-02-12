@@ -14,7 +14,8 @@ router.all('/*', (req, res, next) => {   ///onsuzda admin oldugu ucun bunu silib
 
 router.get('/', (req,res) => {
 
-    Post.find({}).then(posts => {
+    Post.find({}).populate('category')
+        .then(posts => {
 
         //console.log(posts);
 
@@ -53,7 +54,6 @@ router.post('/create', (req,res) => {
     post.file = filename;
     post.category = req.body.category;
 
-    //console.log(filename);
 
     post.save().then(savedPost => {
 
@@ -66,7 +66,7 @@ router.post('/create', (req,res) => {
         //     res.render('admin/posts/currentPost', {sentPost: post});
         // })
     }).catch(err => {
-        res.render('admin/posts/create', {error: err.errors})
+        res.render('admin/posts/create', {error: err.errors})   ///burdaki errors optionu /register routunda if else yazsaq ishleyecek
         //res.send("Post not saved");
         //console.log(err.message);
     });
@@ -94,6 +94,7 @@ router.put('/edit/:id', (req,res) => {
         post.status = req.body.status;
         post.allowComments = allowComments;
         post.body = req.body.body;
+        post.category = req.body.category;
 
         if (req.files != null && req.files !== undefined) { ///burda req.files.file-i silende de elave edende de error verir. --> todolist:3
             let file = req.files.file;

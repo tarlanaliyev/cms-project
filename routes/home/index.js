@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../../models/Post');
 const Category = require("../../models/Category");
+const User = require("../../models/User");
+const bcrypt = require('bcryptjs');
+const passport = require('passport');
+const Localtrategy = require('passport-local').Strategy;
 
 router.all('/*', (req, res, next) => {   /// admin/index -de olan kodu bura da yazdim. Cunki tekce admin/index-de olanda
                                                                                              /// her defesinde /admin eledikde url-de layout-u admin olaraq deyisirdi
@@ -32,8 +36,119 @@ router.get('/login', (req,res) => {
     res.render("home/login");
 })
 
+
+
+//App login
+
+passport.use(new Localtrategy({usernameField: 'email'}, (email,password,done) => {
+    console.log(email);
+    console.log(password);
+
+    User.findOne({email: email}).then(user => {
+
+        if(!user) return done(null, false, { message: 'Incorrect username or password.' }); // flash messages
+
+        bcrypt.compare(password, user.password, (err, match) => {
+            if (match) {
+                return done(null, user);
+            } else {
+                return done(null, false, { message: 'Incorrect username or password.' });
+            }
+        });
+
+
+    })
+
+}))
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+        done(err, user);
+    });
+});
+
+
+
+router.post('/login', (req,res, next) => {
+
+    passport.authenticate('local', {
+        successRedirect: '/admin',
+        failureRedirect: '/login',
+        failureFlash: true
+    })(req,res,next);
+
+
+    //res.render("home/login");
+})
+
+
 router.get('/register', (req,res) => {
     res.render("home/register");
+})
+
+router.post('/register', (req,res) => {
+
+    let error = [];
+
+    if(!req.body.firstName) {
+        error.push({message: "Please enter a First Name!"});
+    }
+
+    if(!req.body.lastName) {
+        error.push({message: "Please enter a Last Name!"});
+    }
+
+    if(!req.body.email) {
+        error.push({message: "Please enter a Email!"});
+    }
+
+    if(!req.body.password) {
+        error.push({message: "Please enter a Password!"});
+    }
+
+    if(!req.body.passwordConfirm) {
+        error.push({message: "Please enter a Password Confirmation!"});
+    }
+
+    if(req.body.password !== req.body.passwordConfirm) {
+        error.push({message: "Passwords don't match!"});
+    }
+
+    if (error.length > 0) {
+        res.render('home/register', {
+            errors: error
+        });
+    }
+
+    User.findOne({email: req.body.email}).then(user => {
+        if (user) {
+            req.flash("error_message", "User already exists!");
+            res.redirect('/register');
+        } else {
+            const newUser = new User();
+            newUser.firstName = req.body.firstName;
+            newUser.lastName = req.body.lastName;
+            newUser.email = req.body.email;
+            newUser.password = req.body.password;
+
+            bcrypt.genSalt(10,(err, salt) => {
+                bcrypt.hash(newUser.password, salt, (err, hashedPwd) => {
+                    newUser.password = hashedPwd;
+                    newUser.save().then(savedUser => {
+                        req.flash("success_message", "You are now registered user. Please log in!");
+                        res.redirect('/login');
+                    })
+                })
+            })
+
+        }
+
+    })
+
 })
 
 router.get('/post/:id', (req,res) => {
