@@ -30,6 +30,7 @@ app.use(session({
 app.use(flash());
 
 //PASSPORT
+
 app.use(passport.initialize());
 app.use(passport.session());
 

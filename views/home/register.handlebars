@@ -1,10 +1,14 @@
 {{> home/form-msgs}}
 
-{{#each errors}}
-    <div class="alert alert-danger">
-        {{message}}
-    </div>
-{{/each}}
+{{#if errors}}
+
+    {{#each errors}}
+        <div class="alert alert-danger">
+            {{message}}
+        </div>
+    {{/each}}
+
+{{/if}}
 
 <div class="card card-register mx-auto mt-5">
     <div class="card-header">Register an Account</div>

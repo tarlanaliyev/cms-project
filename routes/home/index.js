@@ -5,7 +5,7 @@ const Category = require("../../models/Category");
 const User = require("../../models/User");
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
-const Localtrategy = require('passport-local').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
 
 router.all('/*', (req, res, next) => {   /// admin/index -de olan kodu bura da yazdim. Cunki tekce admin/index-de olanda
                                                                                              /// her defesinde /admin eledikde url-de layout-u admin olaraq deyisirdi
@@ -40,7 +40,7 @@ router.get('/login', (req,res) => {
 
 //App login
 
-passport.use(new Localtrategy({usernameField: 'email'}, (email,password,done) => {
+passport.use(new LocalStrategy({usernameField: 'email'}, (email,password,done) => {
     console.log(email);
     console.log(password);
 
@@ -81,8 +81,14 @@ router.post('/login', (req,res, next) => {
         failureFlash: true
     })(req,res,next);
 
+    // res.render("home/login");
+})
 
-    //res.render("home/login");
+router.get('/logout', (req,res) => {
+    req.logout(err => {
+        if(err) console.log(err);
+    });
+    res.redirect('/login');
 })
 
 
@@ -119,16 +125,18 @@ router.post('/register', (req,res) => {
     }
 
     if (error.length > 0) {
-        res.render('home/register', {
+        return res.render('home/register', {  ////error burda imis
             errors: error
         });
+
     }
 
     User.findOne({email: req.body.email}).then(user => {
         if (user) {
             req.flash("error_message", "User already exists!");
-            res.redirect('/register');
+            res.redirect('/login');
         } else {
+
             const newUser = new User();
             newUser.firstName = req.body.firstName;
             newUser.lastName = req.body.lastName;
