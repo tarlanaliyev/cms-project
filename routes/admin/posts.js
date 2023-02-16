@@ -4,8 +4,10 @@ const Post = require('../../models/Post');
 const Category = require('../../models/Category');
 const {isEmpty, uploadDir} = require('../../helpers/upload-helper');
 const fs = require('fs');
+const {userAuthenticated} = require('../../helpers/authentication');
 
-router.all('/*', (req, res, next) => {   ///onsuzda admin oldugu ucun bunu silib test elemek olar
+
+router.all('/*', userAuthenticated, (req, res, next) => {   ///onsuzda admin oldugu ucun bunu silib test elemek olar
 
     req.app.locals.layout = 'admin';
     next();

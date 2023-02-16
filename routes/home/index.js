@@ -6,6 +6,7 @@ const User = require("../../models/User");
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const {userAuthenticated} = require('../../helpers/authentication');
 
 router.all('/*', (req, res, next) => {   /// admin/index -de olan kodu bura da yazdim. Cunki tekce admin/index-de olanda
                                                                                              /// her defesinde /admin eledikde url-de layout-u admin olaraq deyisirdi
@@ -85,6 +86,17 @@ router.post('/login', (req,res, next) => {
 })
 
 router.get('/logout', (req,res) => {
+
+        // // Destroy the session and redirect to the home page
+        // req.session.destroy((err) => {
+        //     if (err) {
+        //         console.log(err);
+        //     } else {
+        //         res.redirect('/login');
+        //     }
+        // });
+
+
     req.logout(err => {
         if(err) console.log(err);
     });

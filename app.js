@@ -36,7 +36,7 @@ app.use(passport.session());
 
 //Local Variables using Middleware
 app.use((req, res, next) => {
-    res.locals.user = req.user || null;
+    res.locals.user = req.user || null;   /// burda user login olanda avtomatik mi gelir??
     res.locals.success_message = req.flash('success_message');
     res.locals.error_message = req.flash('error_message');
     res.locals.error = req.flash('error');
@@ -68,12 +68,14 @@ const home = require('./routes/home/index');
 const admin = require('./routes/admin/index');
 const posts = require('./routes/admin/posts');
 const categories = require('./routes/admin/categories');
+const comments = require('./routes/admin/comments');
 
 //use routes
 app.use('/', home);
 app.use('/admin', admin);
 app.use('/admin/posts', posts);
 app.use('/admin/categories', categories);
+app.use('/admin/comments', comments);
 
 
 app.listen(4500, () => {
