@@ -13,7 +13,12 @@ router.all('/*', (req, res, next) => {   ///onsuzda admin oldugu ucun bunu silib
 })
 
 router.get('/', (req,res) => {
-    res.render('admin/comments');
+
+    Comments.find({}).populate('user')
+        .then(comments => {
+        res.render('admin/comments', {comments: comments});
+    })
+
 })
 
 router.post('/', (req, res) => {
@@ -33,8 +38,14 @@ router.post('/', (req, res) => {
 
         })
 
+    })
 
+})
 
+router.delete('/delete/:id', (req,res) => {
+
+    Comments.remove({_id: req.params.id}).then(deletedItem => {
+        res.redirect('/admin/comments');
     })
 
 })

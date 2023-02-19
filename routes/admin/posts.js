@@ -126,16 +126,24 @@ router.put('/edit/:id', (req,res) => {
 
 router.delete('/delete/:id', (req,res) => {
 
-    Post.findOne({_id: req.params.id}).then(post => {
+    Post.findOne({_id: req.params.id}).populate('comments').then(post => {
         console.log(post);
         fs.unlink(uploadDir + post.file, err=> {
+
+            if (!post.comments.length < 1) {
+
+                post.comments.forEach(comment => {
+                    comment.delete();
+                })
+
+            }
+
             post.remove().then(removedPost => {
-                req.flash('success_message', `Post ${post.title} was succesfully DELETED!`);
+                req.flash('success_message', `Post ${post.title} was successfully DELETED!`);
                 res.redirect('/admin/posts/');
             })
 
         })
-        //res.redirect('/admin/posts/');
     })
 })
 
