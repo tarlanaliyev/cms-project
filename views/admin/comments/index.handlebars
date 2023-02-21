@@ -1,1 +1,34 @@
 <h1>Commnents</h1>
+
+<table class="table">
+
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Owner</th>
+        <th>Date</th>
+        <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    {{#each comments}}
+
+    <tr>
+        <td>{{id}}</td>
+        <td>{{user.firstName}}</td>
+        <td>{{generateDate date "MMMM Do YYYY"}}</td>
+        <td>
+            <form action="/admin/comments/delete/{{id}}?_method=DELETE" method="post">
+                <button type="submit" class="btn btn-danger">DELETE</button>
+            </form>
+        </td>
+    </tr>
+
+    {{/each}}
+
+    </tbody>
+
+
+</table>
