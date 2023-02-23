@@ -36,8 +36,20 @@ router.post('/', (req, res) => {
             })
 
         })
+    })
 
+})
 
+router.delete('/delete/:id', (req,res) => {
+
+    Comments.deleteOne({_id: req.params.id}).then(deletedComment => {
+
+        //res.redirect('/admin/comments');
+        Post.findOneAndUpdate({comments: req.params.id}, {$pull : {comments: req.params.id}}).then(success => {
+            res.redirect('/admin/comments');
+        }).catch(err => {
+            console.log("Error happened at deleting post");
+        })
 
     })
 
