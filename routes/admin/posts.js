@@ -19,12 +19,19 @@ router.get('/', (req,res) => {
     Post.find({}).populate('category')
         .then(posts => {
 
-        //console.log(posts);
-
         res.render('admin/posts', {posts: posts});
 
-
     })
+})
+
+router.get('/my-posts', (req,res) => {
+
+    Post.find({user: req.user.id}).populate('category')
+        .then(posts => {
+
+            res.render('admin/posts/my-posts', {posts: posts});
+
+        })
 })
 
 router.get('/create', (req,res) => {
@@ -49,6 +56,7 @@ router.post('/create', (req,res) => {
     let alowComments = (req.body.allowComments) ? true : false;
 
     const post = new Post();
+    post.user = req.user.id;
     post.title = req.body.title;
     post.status = req.body.status;
     post.allowComments = alowComments;
@@ -92,6 +100,7 @@ router.put('/edit/:id', (req,res) => {
         let filename = "";
         let allowComments = (req.body.allowComments) ? true : false;
 
+        post.user = req.user.id;
         post.title = req.body.title;
         post.status = req.body.status;
         post.allowComments = allowComments;
