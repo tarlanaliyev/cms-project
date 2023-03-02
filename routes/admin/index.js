@@ -13,13 +13,11 @@ router.all('/*', (req, res, next) => {
 })
 
 router.get('/', (req,res) => {
-    Post.count().then(posts => {
-        Category.count().then(categories => {
-            User.count().then(users => {
-                res.render("admin/index", {posts: posts, categories: categories, users: users});  //burda yazdigimiz butun url-lerin evvleine view engine /admin-i avtomatik elave edir
-            })
-        })
-    })
+    if (req.user) {
+        res.render("admin/index");  //burda yazdigimiz butun url-lerin evvleine view engine /admin-i avtomatik elave edir
+    } else {
+        res.redirect('/login');
+    }
 })
 
 router.get('/dashboard', (req,res) => {

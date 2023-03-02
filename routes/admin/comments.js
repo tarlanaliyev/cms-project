@@ -32,7 +32,7 @@ router.post('/', (req, res) => {
         post.save().then(savedPost => {
 
             newComment.save().then(savedComment => {
-                res.redirect(`/post/${post.id}`);
+                res.redirect(`/post/${post.slug}`);
             })
 
         })

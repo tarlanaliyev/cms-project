@@ -11,15 +11,19 @@
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
+                {{#if user}}
                 <li class="nav-item">
                     <a class="nav-link" href="/admin">Admin</a>
                 </li>
+                {{/if}}
                 <li class="nav-item">
                     <a class="nav-link" href="/about">About</a>
                 </li>
+                {{#unless user}}
                 <li class="nav-item">
                     <a class="nav-link" href="/login">Login</a>
                 </li>
+                {{/unless}}
                 <li class="nav-item">
                     <a class="nav-link" href="/register">Register</a>
                 </li>
@@ -29,7 +33,17 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact</a>
                 </li>
+                <li class="nav-item">
+                    <a class="fab fa-mdb"></a>
+                </li>
+                {{#if user}}
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+                        <i class="fa fa-user">{{user.firstName}}</i><i class="fa fa-fw fa-sign-out"></i>Logout</a>
+                </li>
+                {{/if}}
             </ul>
+
         </div>
     </div>
 </nav>
