@@ -170,8 +170,8 @@ router.post('/register', (req,res) => {
 
 })
 
-router.get('/post/:id', (req,res) => {
-    Post.findOne({_id: req.params.id}).populate('user')
+router.get('/post/:slug', (req,res) => {
+    Post.findOne({slug: req.params.slug}).populate('user')
         .populate({path: 'comments', populate: {path: 'user', model: 'users'}})
         .then(post => {
 

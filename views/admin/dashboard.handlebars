@@ -1,0 +1,30 @@
+<h1>Dashboard</h1>
+
+<div class="row">
+<canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Posts', 'Categories', 'Users'],
+            datasets: [{
+                label: '# of Votes',
+                data: [{{posts}}, {{categories}}, {{users}}],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>

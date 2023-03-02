@@ -55,6 +55,15 @@ router.delete('/delete/:id', (req,res) => {
 
 })
 
+//en son qaldigimiz yer
+router.post('/approve-comment', (req,res) => {
+    console.log(req.body.id);
+
+    Comments.findByIdAndUpdate(req.body.id, {$set: {approveComment: req.body.approveComment}}).then(result => {
+        res.send(result); // this result is used in ajax request
+    })
+
+})
 
 
 

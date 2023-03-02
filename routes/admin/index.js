@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const faker = require("faker");
 const Post = require('../../models/Post');
+const Category = require('../../models/Category');
+const User = require('../../models/User');
 
 router.all('/*', (req, res, next) => {
 
@@ -11,11 +13,23 @@ router.all('/*', (req, res, next) => {
 })
 
 router.get('/', (req,res) => {
-    res.render("admin/index");  //burda yazdigimiz butun url-lerin evvleine view engine /admin-i avtomatik elave edir
+    Post.count().then(posts => {
+        Category.count().then(categories => {
+            User.count().then(users => {
+                res.render("admin/index", {posts: posts, categories: categories, users: users});  //burda yazdigimiz butun url-lerin evvleine view engine /admin-i avtomatik elave edir
+            })
+        })
+    })
 })
 
 router.get('/dashboard', (req,res) => {
-    res.render("admin/dashboard");
+    Post.count().then(posts => {
+        Category.count().then(categories => {
+            User.count().then(users => {
+                res.render("admin/dashboard", {posts: posts, categories: categories, users: users});  //burda yazdigimiz butun url-lerin evvleine view engine /admin-i avtomatik elave edir
+            })
+        })
+    })
 })
 
 router.post('/generate-fake-post' , (req,res) => {
