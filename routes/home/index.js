@@ -191,7 +191,7 @@ router.post('/register', (req,res) => {
 
 router.get('/post/:slug', (req,res) => {
     Post.findOne({slug: req.params.slug}).populate('user')
-        .populate({path: 'comments', populate: {path: 'user', model: 'users'}})
+        .populate({path: 'comments', match: {approveComment: true}, populate: {path: 'user', model: 'users'}})
         .then(post => {
 
         Category.find({}).then(categories => {

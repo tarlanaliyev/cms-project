@@ -55,7 +55,7 @@ router.delete('/delete/:id', (req,res) => {
 
 })
 
-//en son qaldigimiz yer
+
 router.post('/approve-comment', (req,res) => {
     console.log(req.body.id);
 
