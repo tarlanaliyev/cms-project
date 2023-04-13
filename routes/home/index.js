@@ -8,7 +8,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const {userAuthenticated} = require('../../helpers/authentication');
 
-router.all('/*', (req, res, next) => {   
+router.all('/*', (req, res, next) => {
 
     req.app.locals.layout = 'home';
     next();
