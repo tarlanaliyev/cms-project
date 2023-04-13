@@ -8,10 +8,10 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const {userAuthenticated} = require('../../helpers/authentication');
 
-router.all('/*', (req, res, next) => {   /// admin/index -de olan kodu bura da yazdim. Cunki tekce admin/index-de olanda
-                                                                                             /// her defesinde /admin eledikde url-de layout-u admin olaraq deyisirdi
-    req.app.locals.layout = 'home';                                                          /// biz yeniden home page qayitmaq istesek alinmirdi. Care olaraq eyni kodu bura
-    next();                                                                                  /// da atmali oldum.
+router.all('/*', (req, res, next) => {   
+
+    req.app.locals.layout = 'home';
+    next();
 
 })
 

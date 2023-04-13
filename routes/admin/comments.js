@@ -5,7 +5,7 @@ const Comments = require('../../models/Comments');
 const {userAuthenticated} = require("../../helpers/authentication");
 
 
-router.all('/*', (req, res, next) => {   ///onsuzda admin oldugu ucun bunu silib test elemek olar
+router.all('/*', (req, res, next) => {
 
     req.app.locals.layout = 'admin';
     next();

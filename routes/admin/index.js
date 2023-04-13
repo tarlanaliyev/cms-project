@@ -24,7 +24,7 @@ router.get('/dashboard', (req,res) => {
     Post.count().then(posts => {
         Category.count().then(categories => {
             User.count().then(users => {
-                res.render("admin/dashboard", {posts: posts, categories: categories, users: users});  //burda yazdigimiz butun url-lerin evvleine view engine /admin-i avtomatik elave edir
+                res.render("admin/dashboard", {posts: posts, categories: categories, users: users});
             })
         })
     })
