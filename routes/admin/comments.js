@@ -42,7 +42,7 @@ router.post('/', (req, res) => {
 
 router.delete('/delete/:id', (req,res) => {
 
-    Comments.deleteOne({_id: req.params.id}).then(deletedComment => {
+    Comments.deleteOne({_id: req.params.id}).then(() => {
 
         //res.redirect('/admin/comments');
         Post.findOneAndUpdate({comments: req.params.id}, {$pull : {comments: req.params.id}}).then(success => {

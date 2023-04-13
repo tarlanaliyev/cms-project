@@ -65,6 +65,8 @@ passport.use(new LocalStrategy({usernameField: 'email'}, (email,password,done) =
     console.log(password);
 
     User.findOne({email: email}).then(user => {
+        console.log(user.isAdmin);
+        console.log(user.lastName);
 
         if(!user) return done(null, false, { message: 'Incorrect username or password.' }); // flash messages
 
