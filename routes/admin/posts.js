@@ -7,7 +7,7 @@ const fs = require('fs');
 const {userAuthenticated} = require('../../helpers/authentication');
 
 
-router.all('/*', userAuthenticated, (req, res, next) => {   ///onsuzda admin oldugu ucun bunu silib test elemek olar
+router.all('/*', userAuthenticated, (req, res, next) => {
 
     req.app.locals.layout = 'admin';
     next();
@@ -44,7 +44,7 @@ router.post('/create', (req,res) => {
 
     let filename = "";
 
-   if (req.files != null && req.files !== undefined) { ///burda .file-i silende error verir. --> todolist:3 -- if (!isEmpty(req.files.file))
+   if (req.files != null && req.files !== undefined) {
        let file = req.files.file;
        filename = Date.now() + "-" + file.name;
 
@@ -64,21 +64,11 @@ router.post('/create', (req,res) => {
     post.file = filename;
     post.category = req.body.category;
 
-
     post.save().then(savedPost => {
-
-        req.flash('success_message', `Post ${post.title} was succesfully saved!`);   //it works! res.render edende flash duzgun islemir. gerek res.redirect edesen
+        req.flash('success_message', `Post ${post.title} was succesfully saved!`);
         res.redirect('/admin/posts');
-
-        // Post.findOne({_id: post.id}).then(post => {
-        //     //console.log(res.locals.success_message);
-        //     req.flash('success_message', `Post ${post.title} was succesfully saved!`);
-        //     res.render('admin/posts/currentPost', {sentPost: post});
-        // })
     }).catch(err => {
-        res.render('admin/posts/create', {error: err.errors})   ///burdaki errors optionu /register routunda if else yazsaq ishleyecek
-        //res.send("Post not saved");
-        //console.log(err.message);
+        res.render('admin/posts/create', {error: err.errors})
     });
 
 })
@@ -107,7 +97,7 @@ router.put('/edit/:id', (req,res) => {
         post.body = req.body.body;
         post.category = req.body.category;
 
-        if (req.files != null && req.files !== undefined) { ///burda req.files.file-i silende de elave edende de error verir. --> todolist:3
+        if (req.files != null && req.files !== undefined) {
             let file = req.files.file;
             filename = Date.now() + "-" + file.name;
 
@@ -120,7 +110,7 @@ router.put('/edit/:id', (req,res) => {
 
         post.save().then(savedPost => {
 
-            req.flash('success_message', `Post ${post.title} was succesfully updated!`);   //it works! res.render edende flash duzgun islemir. gerek res.redirect edesen
+            req.flash('success_message', `Post ${post.title} was succesfully updated!`);
             res.redirect('/admin/posts');
 
             //res.render('admin/posts/currentPost', {sentPost: savedPost});

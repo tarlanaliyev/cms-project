@@ -36,7 +36,7 @@ app.use(passport.session());
 
 //Local Variables using Middleware
 app.use((req, res, next) => {
-    res.locals.user = req.user || null;   /// burda user login olanda avtomatik mi gelir??
+    res.locals.user = req.user || null;   
     res.locals.success_message = req.flash('success_message');
     res.locals.error_message = req.flash('error_message');
     res.locals.error = req.flash('error');

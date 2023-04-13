@@ -14,7 +14,7 @@ router.all('/*', (req, res, next) => {
 
 router.get('/', (req,res) => {
     if (req.user) {
-        res.render("admin/index");  //burda yazdigimiz butun url-lerin evvleine view engine /admin-i avtomatik elave edir
+        res.render("admin/index");
     } else {
         res.redirect('/login');
     }

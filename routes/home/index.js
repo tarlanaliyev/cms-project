@@ -157,7 +157,7 @@ router.post('/register', (req,res) => {
     }
 
     if (error.length > 0) {
-        return res.render('home/register', {  ////error burda imis
+        return res.render('home/register', {
             errors: error
         });
 
